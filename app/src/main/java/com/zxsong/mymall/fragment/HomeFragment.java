@@ -17,12 +17,20 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.google.gson.Gson;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+import com.zxsong.mymall.Contants;
 import com.zxsong.mymall.R;
 import com.zxsong.mymall.adapter.DividerItemDecortion;
-import com.zxsong.mymall.adapter.HomeCategoryAdapter;
-import com.zxsong.mymall.bean.HomeCategory;
+import com.zxsong.mymall.adapter.HomeCampaignAdapter;
+import com.zxsong.mymall.bean.Banner;
+import com.zxsong.mymall.bean.Campaign;
+import com.zxsong.mymall.bean.HomeCampaign;
+import com.zxsong.mymall.http.BaseCallback;
+import com.zxsong.mymall.http.OkHttpHelper;
+import com.zxsong.mymall.http.SpotsCallBack;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,7 +44,13 @@ public class HomeFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
 
-    private HomeCategoryAdapter mAdapter;
+    private HomeCampaignAdapter mAdapter;
+
+    private List<Banner> mBanner;
+
+    private Gson mGson = new Gson();
+
+    private OkHttpHelper httpHelper = OkHttpHelper.getInstance();
 
     private static final String TAG = "HomeFragment";
 
@@ -50,46 +64,148 @@ public class HomeFragment extends Fragment {
 
         mIndicator = (PagerIndicator) view.findViewById(R.id.custom_indicator);
 
-        initSlider();
+        requestImages();
+
+//        initSlider();
 
         initRecyclerView(view);
 
         return view;
     }
 
+    private void requestImages() {
+//        String url = "http://112.124.22.238:8081/course_api/banner/query?type=1";
+
+//        OkHttpClient client = new OkHttpClient();
+//
+//        RequestBody body = new FormEncodingBuilder()
+//                .add("type", "1")
+//                .build();
+//
+//
+//        Request request = new Request.Builder()
+//                .url(url)
+//                .post(body)
+//                .build();
+//
+//
+//        client.newCall(request).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Request request, IOException e) {
+//
+//            }
+//
+//
+//            @Override
+//            public void onResponse(Response response) throws IOException {
+//
+//                if (response.isSuccessful()) {
+//
+//                    String json = response.body().string();
+//
+//                    Type type = new TypeToken<List<Banner>>(){}.getType();
+//                    mBanner = mGson.fromJson(json, type);
+//
+//                    initSlider();
+//                }
+//            }
+//        });
+
+        httpHelper.get(Contants.API.BANNER_HOME+"?type=1", new SpotsCallBack<List<Banner>>(getContext()) {
+            @Override
+            public void onSuccess(Response response, List<Banner> banners) {
+                mBanner = banners;
+                initSlider();
+            }
+
+            @Override
+            public void onError(Response response, int code, Exception e) {
+
+            }
+        });
+    }
+
     private void initRecyclerView(View view) {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
+//
+//        List<HomeCategory> datas = new ArrayList<>(15);
+//
+//        HomeCategory category = new HomeCategory("热门活动", R.drawable.img_big_0, R.drawable.img_0_small1, R.drawable
+//                .img_0_small2);
+//        datas.add(category);
+//
+//        category = new HomeCategory("有利可图", R.drawable.img_big_1, R.drawable.img_1_small1, R.drawable.img_1_small2);
+//        datas.add(category);
+//
+//        category = new HomeCategory("品牌街", R.drawable.img_big_2, R.drawable.img_2_small1, R.drawable.img_2_small2);
+//        datas.add(category);
+//
+//        category = new HomeCategory("金融街 包赚翻", R.drawable.img_big_3, R.drawable.img_3_small1, R.drawable.img_3_small2);
+//        datas.add(category);
+//
+//        category = new HomeCategory("超值购", R.drawable.img_big_4, R.drawable.img_4_small1, R.drawable.img_4_small2);
+//        datas.add(category);
+//
+//        mAdapter = new HomeCampaignAdapter(datas);
+//
+//        mRecyclerView.setAdapter(mAdapter);
+//
+//        mRecyclerView.addItemDecoration(new DividerItemDecortion());
+//
+//        mRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
 
-        List<HomeCategory> datas = new ArrayList<>(15);
+        httpHelper.get(Contants.API.CAMPAIGN_HOME, new BaseCallback<List<HomeCampaign>>() {
 
-        HomeCategory category = new HomeCategory("热门活动", R.drawable.img_big_0, R.drawable.img_0_small1, R.drawable
-                .img_0_small2);
-        datas.add(category);
+            @Override
+            public void onError(Response response, int code, Exception e) {
 
-        category = new HomeCategory("有利可图", R.drawable.img_big_1, R.drawable.img_1_small1, R.drawable.img_1_small2);
-        datas.add(category);
+            }
 
-        category = new HomeCategory("品牌街", R.drawable.img_big_2, R.drawable.img_2_small1, R.drawable.img_2_small2);
-        datas.add(category);
+            @Override
+            public void onSuccess(Response response, List<HomeCampaign> homeCampaigns) {
 
-        category = new HomeCategory("金融街 包赚翻", R.drawable.img_big_3, R.drawable.img_3_small1, R.drawable.img_3_small2);
-        datas.add(category);
+                initRecyclerViewData(homeCampaigns);
+            }
 
-        category = new HomeCategory("超值购", R.drawable.img_big_4, R.drawable.img_4_small1, R.drawable.img_4_small2);
-        datas.add(category);
+            @Override
+            public void onResponse(Response response) {
 
-        mAdapter = new HomeCategoryAdapter(datas);
+            }
+
+            @Override
+            public void onFailure(Request request, Exception e) {
+
+            }
+
+            @Override
+            public void onBeforeRequest(Request request) {
+
+            }
+        });
+
+    }
+
+    private void initRecyclerViewData(List<HomeCampaign> homeCampaigns) {
+        mAdapter = new HomeCampaignAdapter(homeCampaigns,getActivity());
+
+        mAdapter.setOnCampaignClickListener(new HomeCampaignAdapter.OnCampaignClickListener() {
+            @Override
+            public void onClick(View view, Campaign campaign) {
+                Toast.makeText(getContext(), "title=" + campaign.getTitle(), Toast.LENGTH_LONG).show();
+            }
+        });
 
         mRecyclerView.setAdapter(mAdapter);
 
         mRecyclerView.addItemDecoration(new DividerItemDecortion());
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
-
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     private void initSlider() {
-        TextSliderView textSliderView1 = new TextSliderView(this.getActivity());
+
+
+        /*TextSliderView textSliderView1 = new TextSliderView(this.getActivity());
         textSliderView1.image("http://m.360buyimg" +
                 ".com/mobilecms/s300x98_jfs/t2416/102/20949846/13425/a3027ebc/55e6d1b9Ne6fd6d8f.jpg");
         textSliderView1.description("新品推荐");
@@ -127,7 +243,17 @@ public class HomeFragment extends Fragment {
 
         mSliderLayout.addSlider(textSliderView1);
         mSliderLayout.addSlider(textSliderView2);
-        mSliderLayout.addSlider(textSliderView3);
+        mSliderLayout.addSlider(textSliderView3);*/
+
+        if (mBanner != null) {
+            for (Banner banner : mBanner) {
+                TextSliderView textSliderView = new TextSliderView(this.getActivity());
+                textSliderView.image(banner.getImgUrl());
+                textSliderView.description(banner.getName());
+                textSliderView.setScaleType(BaseSliderView.ScaleType.Fit);
+                mSliderLayout.addSlider(textSliderView);
+            }
+        }
 
         //转场动画
         mSliderLayout.setPresetTransformer(SliderLayout.Transformer.RotateUp);
