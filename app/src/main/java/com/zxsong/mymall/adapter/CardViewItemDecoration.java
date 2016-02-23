@@ -6,9 +6,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 /**
- * Created by zxsong on 2016/2/20.
+ * Created by zxsong on 2016/2/23.
  */
-public class DividerItemDecortion extends RecyclerView.ItemDecoration {
+public class CardViewItemDecoration extends RecyclerView.ItemDecoration {
     @Override
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
         super.onDraw(c, parent, state);

@@ -22,7 +22,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.zxsong.mymall.Contants;
 import com.zxsong.mymall.R;
-import com.zxsong.mymall.adapter.DividerItemDecortion;
+import com.zxsong.mymall.adapter.CardViewItemDecoration;
 import com.zxsong.mymall.adapter.HomeCampaignAdapter;
 import com.zxsong.mymall.bean.Banner;
 import com.zxsong.mymall.bean.Campaign;
@@ -197,7 +197,7 @@ public class HomeFragment extends Fragment {
 
         mRecyclerView.setAdapter(mAdapter);
 
-        mRecyclerView.addItemDecoration(new DividerItemDecortion());
+        mRecyclerView.addItemDecoration(new CardViewItemDecoration());
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
