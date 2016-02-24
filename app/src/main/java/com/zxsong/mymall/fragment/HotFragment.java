@@ -12,15 +12,16 @@ import android.widget.Toast;
 
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
+import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.zxsong.mymall.Contants;
 import com.zxsong.mymall.R;
-import com.zxsong.mymall.adapter.DividerItemDecoration;
-import com.zxsong.mymall.adapter.HotWaresAdapter;
+import com.zxsong.mymall.adapter.decoration.DividerItemDecoration;
+import com.zxsong.mymall.adapter.HWAdapter;
 import com.zxsong.mymall.bean.Page;
 import com.zxsong.mymall.bean.Wares;
+import com.zxsong.mymall.http.BaseCallback;
 import com.zxsong.mymall.http.OkHttpHelper;
-import com.zxsong.mymall.http.SpotsCallBack;
 
 import java.util.List;
 
@@ -37,7 +38,8 @@ public class HotFragment extends Fragment {
     private List<Wares> datas;
     private RecyclerView mRecyclerView;
     private MaterialRefreshLayout mRefreshLayout;
-    private HotWaresAdapter mAdapter;
+//    private HotWaresAdapter mAdapter;
+    private HWAdapter mAdapter;
 
     private static final int STATE_NORMAL = 0;
     private static final int STATE_REFREH = 1;
@@ -100,11 +102,24 @@ public class HotFragment extends Fragment {
 
         String url = Contants.API.WARES_HOT + "?curPage=" + currPage + "&pageSize=" + pageSize;
 
-        httpHelper.get(url, new SpotsCallBack<Page<Wares>>(getActivity()) {
+        httpHelper.get(url, new BaseCallback<Page<Wares>>() {
+            @Override
+            public void onBeforeRequest(Request request) {
+
+            }
+
+            @Override
+            public void onFailure(Request request, Exception e) {
+
+            }
+
+            @Override
+            public void onResponse(Response response) {
+
+            }
 
             @Override
             public void onSuccess(Response response, Page<Wares> waresPage) {
-
                 datas = waresPage.getList();
                 currPage = waresPage.getCurrentPage();
                 pageSize = waresPage.getPageSize();
@@ -112,18 +127,37 @@ public class HotFragment extends Fragment {
                 showData();
             }
 
+
             @Override
             public void onError(Response response, int code, Exception e) {
 
             }
         });
+
+//        httpHelper.get(url, new SpotsCallBack<Page<Wares>>(getActivity()) {
+//
+//            @Override
+//            public void onSuccess(Response response, Page<Wares> waresPage) {
+//
+//                datas = waresPage.getList();
+//                currPage = waresPage.getCurrentPage();
+//                pageSize = waresPage.getPageSize();
+//                totalPage = waresPage.getTotalPage();
+//                showData();
+//            }
+//
+//            @Override
+//            public void onError(Response response, int code, Exception e) {
+//
+//            }
+//        });
     }
 
     private void showData() {
 
         switch (state) {
             case STATE_NORMAL:
-                mAdapter = new HotWaresAdapter(datas);
+                mAdapter = new HWAdapter(getActivity(),datas);
                 mRecyclerView.setAdapter(mAdapter);
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                 mRecyclerView.setItemAnimator(new DefaultItemAnimator());

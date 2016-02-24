@@ -18,16 +18,14 @@ import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.google.gson.Gson;
-import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.zxsong.mymall.Contants;
 import com.zxsong.mymall.R;
-import com.zxsong.mymall.adapter.CardViewItemDecoration;
+import com.zxsong.mymall.adapter.decoration.CardViewItemDecoration;
 import com.zxsong.mymall.adapter.HomeCampaignAdapter;
 import com.zxsong.mymall.bean.Banner;
 import com.zxsong.mymall.bean.Campaign;
 import com.zxsong.mymall.bean.HomeCampaign;
-import com.zxsong.mymall.http.BaseCallback;
 import com.zxsong.mymall.http.OkHttpHelper;
 import com.zxsong.mymall.http.SpotsCallBack;
 
@@ -154,12 +152,8 @@ public class HomeFragment extends Fragment {
 //
 //        mRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
 
-        httpHelper.get(Contants.API.CAMPAIGN_HOME, new BaseCallback<List<HomeCampaign>>() {
+        httpHelper.get(Contants.API.CAMPAIGN_HOME, new SpotsCallBack<List<HomeCampaign>>(getContext()) {
 
-            @Override
-            public void onError(Response response, int code, Exception e) {
-
-            }
 
             @Override
             public void onSuccess(Response response, List<HomeCampaign> homeCampaigns) {
@@ -168,17 +162,7 @@ public class HomeFragment extends Fragment {
             }
 
             @Override
-            public void onResponse(Response response) {
-
-            }
-
-            @Override
-            public void onFailure(Request request, Exception e) {
-
-            }
-
-            @Override
-            public void onBeforeRequest(Request request) {
+            public void onError(Response response, int code, Exception e) {
 
             }
         });

@@ -1,4 +1,4 @@
-package com.zxsong.mymall.adapter;
+package com.zxsong.mymall.adapter.decoration;
 
 import android.content.Context;
 import android.content.res.TypedArray;

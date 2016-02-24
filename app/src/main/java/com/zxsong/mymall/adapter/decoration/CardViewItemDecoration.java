@@ -1,4 +1,4 @@
-package com.zxsong.mymall.adapter;
+package com.zxsong.mymall.adapter.decoration;
 
 import android.graphics.Canvas;
 import android.graphics.Rect;
