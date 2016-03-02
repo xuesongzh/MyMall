@@ -35,6 +35,7 @@ import com.zxsong.mymall.bean.Wares;
 import com.zxsong.mymall.http.BaseCallback;
 import com.zxsong.mymall.http.OkHttpHelper;
 import com.zxsong.mymall.http.SpotsCallBack;
+import com.zxsong.mymall.widget.MyToolBar;
 
 import java.util.List;
 
@@ -42,6 +43,9 @@ import java.util.List;
  * Created by zxsong on 2016/1/5.
  */
 public class CategoryFragment extends Fragment {
+
+    @ViewInject(R.id.toolbar)
+    private MyToolBar toolBar;
 
     @ViewInject(R.id.recyclerview_category)
     private RecyclerView mRecyclerView;
@@ -79,10 +83,17 @@ public class CategoryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_category, container, false);
         ViewUtils.inject(this, view);
 
+        initToolBar();
         requestCategoryData();
         requestBannerData();
         initRefreshLayout();
         return view;
+    }
+
+    private void initToolBar() {
+
+        toolBar.showSearchView();
+        toolBar.hideTitleView();
     }
 
     private void requestCategoryData() {

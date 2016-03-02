@@ -41,21 +41,30 @@ public abstract class BaseAdapter<T, H extends BaseViewHolder> extends RecyclerV
 
         mInflater = LayoutInflater.from(parent.getContext());
         View view = mInflater.inflate(layoutResId, parent, false);
-        return new BaseViewHolder(view,listener);
+        return new BaseViewHolder(view, listener);
     }
 
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int position) {
         T t = mDatas.get(position);
-        bindData(holder,t);
+        bindData(holder, t);
     }
 
     @Override
     public int getItemCount() {
+
+        if (mDatas == null || mDatas.size() <= 0) {
+
+            return 0;
+        }
+
         return mDatas.size();
     }
 
     public T getItem(int position) {
+
+        if (position >= mDatas.size())
+            return null;
 
         return mDatas.get(position);
     }

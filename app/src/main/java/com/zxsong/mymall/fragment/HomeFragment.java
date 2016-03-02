@@ -28,6 +28,7 @@ import com.zxsong.mymall.bean.Campaign;
 import com.zxsong.mymall.bean.HomeCampaign;
 import com.zxsong.mymall.http.OkHttpHelper;
 import com.zxsong.mymall.http.SpotsCallBack;
+import com.zxsong.mymall.widget.MyToolBar;
 
 import java.util.List;
 
@@ -35,6 +36,8 @@ import java.util.List;
  * Created by zxsong on 2015/12/31.
  */
 public class HomeFragment extends Fragment {
+
+    private MyToolBar toolBar;
 
     private SliderLayout mSliderLayout;
 
@@ -58,9 +61,13 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        toolBar = (MyToolBar) view.findViewById(R.id.toolbar);
+
         mSliderLayout = (SliderLayout) view.findViewById(R.id.slider);
 
         mIndicator = (PagerIndicator) view.findViewById(R.id.custom_indicator);
+
+        initToolBar();
 
         requestImages();
 
@@ -69,6 +76,13 @@ public class HomeFragment extends Fragment {
         initRecyclerView(view);
 
         return view;
+    }
+
+    private void initToolBar() {
+
+        toolBar.showSearchView();
+        toolBar.hideTitleView();
+
     }
 
     private void requestImages() {

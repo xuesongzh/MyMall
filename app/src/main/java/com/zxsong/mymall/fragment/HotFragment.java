@@ -16,12 +16,13 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.zxsong.mymall.Contants;
 import com.zxsong.mymall.R;
-import com.zxsong.mymall.adapter.decoration.DividerItemDecoration;
 import com.zxsong.mymall.adapter.HWAdapter;
+import com.zxsong.mymall.adapter.decoration.DividerItemDecoration;
 import com.zxsong.mymall.bean.Page;
 import com.zxsong.mymall.bean.Wares;
 import com.zxsong.mymall.http.BaseCallback;
 import com.zxsong.mymall.http.OkHttpHelper;
+import com.zxsong.mymall.widget.MyToolBar;
 
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class HotFragment extends Fragment {
     private List<Wares> datas;
     private RecyclerView mRecyclerView;
     private MaterialRefreshLayout mRefreshLayout;
+    private MyToolBar toolBar;
 //    private HotWaresAdapter mAdapter;
     private HWAdapter mAdapter;
 
@@ -53,13 +55,22 @@ public class HotFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_hot, container, false);
 
+        toolBar = (MyToolBar) view.findViewById(R.id.toolbar);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerview);
         mRefreshLayout = (MaterialRefreshLayout) view.findViewById(R.id.refresh_view);
 
+        initToolBar();
         initRefreshLayout();
         getData();
 
         return view;
+    }
+
+    private void initToolBar() {
+
+        toolBar.hideSearchView();
+        toolBar.showTitleView();
+        toolBar.setTitle(R.string.hot);
     }
 
     private void initRefreshLayout() {

@@ -11,7 +11,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.zxsong.mymall.bean.Tab;
-import com.zxsong.mymall.fragment.CartFragmentt;
+import com.zxsong.mymall.fragment.CartFragment;
 import com.zxsong.mymall.fragment.CategoryFragment;
 import com.zxsong.mymall.fragment.HomeFragment;
 import com.zxsong.mymall.fragment.HotFragment;
@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     private List<Tab> mTabs = new ArrayList<Tab>();
 
+    private CartFragment cartFragment;
 
     @Override
 
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         Tab tab_home = new Tab(R.string.home, R.drawable.selector_icon_home, HomeFragment.class);
         Tab tab_hot = new Tab(R.string.hot, R.drawable.selector_icon_hot, HotFragment.class);
         Tab tab_category = new Tab(R.string.catagory, R.drawable.selector_icon_category, CategoryFragment.class);
-        Tab tab_cart = new Tab(R.string.cart, R.drawable.selector_icon_cart, CartFragmentt.class);
+        Tab tab_cart = new Tab(R.string.cart, R.drawable.selector_icon_cart, CartFragment.class);
         Tab tab_mine = new Tab(R.string.mine, R.drawable.selector_icon_mine, MineFragment.class);
 
         mTabs.add(tab_home);
@@ -66,9 +67,34 @@ public class MainActivity extends AppCompatActivity {
             tabSpec.setIndicator(buildIndicator(tab));
             mTabHost.addTab(tabSpec, tab.getFragment(), null);
         }
+
+        mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+
+                if (tabId == getString(R.string.cart)) {
+
+                    refreshData();
+                }
+            }
+        });
         //去除Tab之间的竖线
         mTabHost.getTabWidget().setShowDividers(LinearLayout.SHOW_DIVIDER_NONE);
         mTabHost.setCurrentTab(0);
+    }
+
+    private void refreshData() {
+
+        if (cartFragment == null) {
+
+            cartFragment = (CartFragment) getSupportFragmentManager().findFragmentByTag(getString(R.string.cart));
+            if (cartFragment != null) {
+
+                cartFragment.refreshData();
+            }
+        } else {
+            cartFragment.refreshData();
+        }
     }
 
     @NonNull

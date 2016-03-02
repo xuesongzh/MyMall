@@ -23,7 +23,7 @@
             android:id="@+id/text_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
+            android:paddingTop="5dp"
             android:text="热门活动"
             android:textColor="@color/black"
             android:textSize="20dp"/>
@@ -43,7 +43,7 @@
             <ImageView
                 android:id="@+id/imgview_big"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="200dp"
                 android:layout_weight="1"/>
 
             <View
@@ -62,7 +62,7 @@
                 <ImageView
                     android:id="@+id/imgview_small_top"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="100dp"
                     />
 
                 <View
@@ -74,7 +74,7 @@
                 <ImageView
                     android:id="@+id/imgview_small_bottom"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="100dp"
 
                     />
 
